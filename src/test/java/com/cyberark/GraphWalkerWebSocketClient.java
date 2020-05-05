@@ -4,7 +4,6 @@ package com.cyberark;
 import org.graphwalker.io.common.ResourceUtils;
 import org.java_websocket.WebSocketImpl;
 import org.java_websocket.client.WebSocketClient;
-//import org.java_websocket.drafts.Draft_18;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
@@ -21,15 +20,14 @@ import java.nio.file.Path;
 
 public class GraphWalkerWebSocketClient {
 
+    private TestRunner runner;
     private WebSocketClient wsc;
     private static final Logger logger = LoggerFactory.getLogger(GraphWalkerWebSocketClient.class);
 
     private enum RX_STATE {
-        NONE, HASNEXT, LOADMODEL, START, RESTART, GETNEXT, GETDATA, VISITEDELEMENT
+        NONE, HASNEXT, LOADMODEL, START, GETNEXT, GETDATA, VISITEDELEMENT
     }
 
-    private final String START = "{\"command\": \"start\"}";
-    private final String RESTART = "{\"command\": \"restart\"}";
     private final String GET_NEXT = "{\"command\": \"getNext\"}";
     private final String HAS_NEXT = "{\"command\": \"hasNext\"}";
     private final String GET_DATA = "{\"command\": \"getData\"}";
@@ -80,7 +78,14 @@ public class GraphWalkerWebSocketClient {
         }
     }
 
+
+    /***********************************************
+     * Connect & get the server messages/responses *
+     **********************************************/
+
     private void connect() {
+
+        runner = new TestRunner();
         try {
             wsc = new WebSocketClient(new URI("ws://" + host + ":" + port), new Draft_6455()) {
 
@@ -117,14 +122,10 @@ public class GraphWalkerWebSocketClient {
                         if (root.getBoolean("success")) {
                             cmd = true;
                         }
-                    } else if (type.equals("RESTART")) {
-                        rxState = RX_STATE.RESTART;
-                        if (root.getBoolean("success")) {
-                            cmd = true;
-                        }
                     } else if (type.equals("GETNEXT")) {
                         rxState = RX_STATE.GETNEXT;
                         if (root.getBoolean("success")) {
+                            runner.executeMethod(root.getString("name"));
                             cmd = true;
                         }
                     } else if (type.equals("GETDATA")) {
@@ -163,6 +164,11 @@ public class GraphWalkerWebSocketClient {
         }
         wsc.connect();
     }
+
+
+    /****************************************
+     * Client sending mesages to the server *
+     ***************************************/
 
     private void wait(GraphWalkerWebSocketClient client, RX_STATE state) {
         while (client.rxState != state) {
@@ -227,24 +233,6 @@ public class GraphWalkerWebSocketClient {
     public void close() {
         logger.debug("Will close");
         client.wsc.close();
-    }
-
-    /**
-     * Starts the machine. No more loadModel calls are allowed.
-     */
-    public void startMachine() {
-        logger.debug("Start the machine");
-        client.wsc.send(START);
-        wait(client, RX_STATE.START);
-    }
-
-    /**
-     * Restarts the machine. All previously loaded models will be discared.
-     */
-    public void restartMachine() {
-        logger.debug("Restart the machine");
-        client.wsc.send(RESTART);
-        wait(client, RX_STATE.RESTART);
     }
 
     /**

@@ -92,15 +92,15 @@ $ mvn exec:java -Dexec.mainClass="com.cyberark.BstTest"
 
 =====================================================================
 
-In terminal:
-------------
+In * Terminal * :
+-----------------
 $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 $ pwd
 /Users/oferr/workspace/GraphWalker-websocket_client
 $ java -jar ../lib/graphwalker-cli-4.2.0.jar  --debug all online
 
-In VS-Code:
------------
+In * VS-Code * :
+----------------
 $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 $ mvn clean test
 
@@ -122,3 +122,27 @@ In VS-Code:
 $ mvnDebug "-DforkCount=0" test
 
 And launch the 'Debug(Attach)' at the Run/Debug pannel
+
+
+
+
+=======================================================================================
+Execution output:
+=================
+
+- Get data
+- Got message: {"data":{"vals":"0"},"success":true,"command":"getData"}
+- Have next step?
+- Got message: {"success":true,"hasNext":true,"command":"hasNext"}
+ Get next step
+- Got message: {"elementId":"9a6b8be2-3e0c-4e8d-bb38-21107b66a4d3",
+                "visitedCount":1,"stopConditionFulfillment":0.25,"data":{"vals":"1"},
+                "modelId":"cbca8c67-6d0c-40b4-8afb-032b069a4bc1","totalCount":6,
+                "command":"visitedElement"}
+- Got message: {"elementId":"9a6b8be2-3e0c-4e8d-bb38-21107b66a4d3",
+                "modelId":"cbca8c67-6d0c-40b4-8afb-032b069a4bc1","success":true,
+                "name":"e_Add","command":"getNext"}
+- Get data
+- Got message: {"data":{"vals":"1"},"success":true,"command":"getData"}
+- Have next step?
+

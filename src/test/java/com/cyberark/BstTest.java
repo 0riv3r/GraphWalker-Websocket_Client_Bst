@@ -217,43 +217,45 @@ public class BstTest {
     // }
 
 
-    @Test
-    public void runFunctionalTest() {
+    // ***********************************************************************
 
-        // BstTest app = new BstTest();
-        // Method method = null;
-        // String nextStep;
+    // public void executeMethod(String methodName) {
+    //     try {
+    //         method = app.getClass().getMethod(methodName);
+    //     } catch (SecurityException e) {
+    //         e.printStackTrace();
+    //     } catch (NoSuchMethodException e) {
+    //         e.printStackTrace();
+    //     }
+
+    //     try {
+    //         method.invoke(app);
+    //     } catch (IllegalArgumentException e) {
+    //         e.printStackTrace();
+    //     }
+    //     catch (IllegalAccessException e) {
+    //         e.printStackTrace();
+    //     }
+    //     catch (InvocationTargetException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
+
+    // @Test
+    // public void runFunctionalTest() {
+
+    //     BstTest app = new BstTest();
+    //     Method method = null;
+    //     String nextStep;
 
 
-        GraphWalkerWebSocketClient gw_wsc = new GraphWalkerWebSocketClient();
-        gw_wsc.run();
-        gw_wsc.loadModel(Paths.get("src/test/resources/com/cyberark/BstModel.json"));
-        /* gw_wsc.startMachine(); */
-        while (gw_wsc.hasNext()) {
-            gw_wsc.getNext();
-            gw_wsc.getData();
-        //     // nextStep = gw_wsc.getNext();
-        //     // // System.out.println(nextStep);
-        //     // try {
-        //     //     method = app.getClass().getMethod(nextStep);
-        //     // } catch (SecurityException e) {
-        //     //     e.printStackTrace();
-        //     // } catch (NoSuchMethodException e) {
-        //     //     e.printStackTrace();
-        //     // }
-
-        //     // try {
-        //     //     method.invoke(app);
-        //     // } catch (IllegalArgumentException e) {
-        //     //     e.printStackTrace();
-        //     // }
-        //     // catch (IllegalAccessException e) {
-        //     //     e.printStackTrace();
-        //     // }
-        //     // catch (InvocationTargetException e) {
-        //     //     e.printStackTrace();
-        //     // }
-        }
-        gw_wsc.close();
-    }
+    //     GraphWalkerWebSocketClient gw_wsc = new GraphWalkerWebSocketClient();
+    //     gw_wsc.run();
+    //     gw_wsc.loadModel(Paths.get("src/test/resources/com/cyberark/BstModel.json"));
+    //     while (gw_wsc.hasNext()) {
+    //         gw_wsc.getNext();
+    //         gw_wsc.getData();
+    //     }
+    //     gw_wsc.close();
+    // }
 }
