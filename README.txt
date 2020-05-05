@@ -97,7 +97,12 @@ In * Terminal * :
 $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 $ pwd
 /Users/oferr/workspace/GraphWalker-websocket_client
+
+$ java -jar ../lib/graphwalker-cli-4.2.0.jar online
+or
 $ java -jar ../lib/graphwalker-cli-4.2.0.jar  --debug all online
+or
+$ java -jar graphwalker-cli-4.2.0.jar online --port 9999 --service WEBSOCKET
 
 In * VS-Code * :
 ----------------

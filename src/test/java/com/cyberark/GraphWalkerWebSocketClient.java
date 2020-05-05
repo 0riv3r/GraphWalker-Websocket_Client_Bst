@@ -91,7 +91,7 @@ public class GraphWalkerWebSocketClient {
 
                 @Override
                 public void onMessage(String message) {
-                    logger.debug("Got message: " + message );
+                    // logger.debug("Got message: " + message );
                     JSONObject root;
                     try {
                         root = new JSONObject(message);
@@ -125,12 +125,13 @@ public class GraphWalkerWebSocketClient {
                     } else if (type.equals("GETNEXT")) {
                         rxState = RX_STATE.GETNEXT;
                         if (root.getBoolean("success")) {
-                            runner.executeMethod(root.getString("name"));
+                            runner.executeStateMethod(root.getString("name"));
                             cmd = true;
                         }
                     } else if (type.equals("GETDATA")) {
                         rxState = RX_STATE.GETDATA;
                         if (root.getBoolean("success")) {
+                            runner.executeStateData(root.getJSONObject("data"));
                             cmd = true;
                         }
                     } else if (type.equals("VISITEDELEMENT")) {
@@ -192,7 +193,7 @@ public class GraphWalkerWebSocketClient {
      * @param model a JSON formatted GraphWalker model as a string
      */
     public void loadModel(String model) {
-        logger.debug("Loading model: " + model);
+        // logger.debug("Loading model: " + model);
         client.wsc.send(model);
         // wait(client, RX_STATE.LOADMODEL);
         wait(client, RX_STATE.START);
@@ -207,7 +208,7 @@ public class GraphWalkerWebSocketClient {
      * @param path  a JSON formatted GraphWalker model as a file
      */
     public void loadModel(Path path) {
-        logger.debug("Loading model file: " + path.toString());
+        // logger.debug("Loading model file: " + path.toString());
         BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceUtils.getResourceAsStream(path.toString())));
         StringBuilder out = new StringBuilder();
         String line;
@@ -231,7 +232,7 @@ public class GraphWalkerWebSocketClient {
      * Closes the connection with the GraphWalker server.
      */
     public void close() {
-        logger.debug("Will close");
+        // logger.debug("Will close");
         client.wsc.close();
     }
 
@@ -239,7 +240,7 @@ public class GraphWalkerWebSocketClient {
      * Gets the next element from the the GraphWalker machine
      */
     public void getNext() {
-        logger.debug("Get next step");
+        // logger.debug("Get next step");
         client.wsc.send(GET_NEXT);
         wait(client, RX_STATE.GETNEXT);
     }
@@ -250,7 +251,7 @@ public class GraphWalkerWebSocketClient {
      * @return If all stop conditions are fulfilled for the machine, true is returned. Otherwise false.
      */
     public boolean hasNext() {
-        logger.debug("Have next step?");
+        // logger.debug("Have next step?");
         client.wsc.send(HAS_NEXT);
         wait(client, RX_STATE.HASNEXT);
         return client.hasNext;
@@ -260,7 +261,7 @@ public class GraphWalkerWebSocketClient {
      * Asks the machine to return all data from the current model context.
      */
     public void getData() {
-        logger.debug("Get data");
+        // logger.debug("Get data");
         client.wsc.send(GET_DATA);
         wait(client, RX_STATE.GETDATA);
     }

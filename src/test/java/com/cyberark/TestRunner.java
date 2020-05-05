@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 public class TestRunner {
@@ -19,12 +20,16 @@ public class TestRunner {
         excludes.add("v_Start");
     }
 
-    public void executeMethod(String methodName) {
+    public void executeStateData(JSONObject stateData) {
+        System.out.println(">>>>>>  stateData - vals = " + stateData.getString("vals"));
+    }
 
-        System.out.println(">>>>>>  methodName:" + methodName + "!");
-        System.out.println(">>>>>>  excludes:" + excludes + "!");
+    public void executeStateMethod(String methodName) {
+
+        // System.out.println(">>>>>>  methodName:" + methodName);
+        // System.out.println(">>>>>>  excludes:" + excludes);
         if(!excludes.contains(methodName)) {
-
+ 
             Method method = null;
             try {
                 method = testApp.getClass().getMethod(methodName);

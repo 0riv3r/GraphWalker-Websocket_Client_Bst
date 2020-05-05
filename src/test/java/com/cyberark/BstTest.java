@@ -1,37 +1,16 @@
 package com.cyberark;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Set;
-import java.util.Stack;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
-import org.json.JSONObject;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+import java.util.Stack;
 
 /**
  * REST
@@ -182,8 +161,6 @@ public class BstTest {
         // throw new RuntimeException( "v_MenuDispatcher is not implemented yet!" );
     }
 
-    /** >>>>>>>>  TESTS   <<<<<<<<<<< */
-
 
     // *******************************************************************
     // ****     run GraphWalker online test as WebSocket service      ****
@@ -191,71 +168,42 @@ public class BstTest {
 
     // # in another terminal/PuTTy , lunch the GraphWalker Websocket service and load the model:
 
-    // Execute
-    // # If required, make sure to use the correct java:
-    // $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-    // $ cd workspace/GraphWalker-rest_client/
-    // $ java -jar ../lib/graphwalker-cli-4.2.0.jar online --port 8887 --service WEBSOCKET
+    /*
+        In * Terminal * :
+        -----------------
+        $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+        $ pwd
+        /Users/oferr/workspace/GraphWalker-websocket_client
 
-    // in VS-Code run:
-    // -----------------
-    // Execute
-    // # If required, make sure to use the correct java:
-    // $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-    // $ mvn clean compile exec:java -Dexec.mainClass="com.cyberark.BstTest"
+        $ java -jar ../lib/graphwalker-cli-4.2.0.jar online
+        or
+        $ java -jar ../lib/graphwalker-cli-4.2.0.jar  --debug all online
+        or
+        $ java -jar graphwalker-cli-4.2.0.jar online --port 9999 --service WEBSOCKET
 
-
-
-    // @BeforeEach
-    // public void initTest(){
-    //     // make sure to restart the model execution
-    //     try {
-    //         new GraphWalkerWebSocketClient().restartMachine();
-    //     } catch (Exception e1) {
-    //         e1.printStackTrace();
-    //     }
-    // }
+        In * VS-Code * :
+        ----------------
+        $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+        $ mvn clean test
 
 
-    // ***********************************************************************
+        Debugging:
+        ----------
+        The launch json for debugging when running unit-test is:
 
-    // public void executeMethod(String methodName) {
-    //     try {
-    //         method = app.getClass().getMethod(methodName);
-    //     } catch (SecurityException e) {
-    //         e.printStackTrace();
-    //     } catch (NoSuchMethodException e) {
-    //         e.printStackTrace();
-    //     }
+        {
+            "type": "java",
+            "name": "Debug (Attach)",
+            "projectName": "graphwalker_websocket_client",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 8000
+        }
 
-    //     try {
-    //         method.invoke(app);
-    //     } catch (IllegalArgumentException e) {
-    //         e.printStackTrace();
-    //     }
-    //     catch (IllegalAccessException e) {
-    //         e.printStackTrace();
-    //     }
-    //     catch (InvocationTargetException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
+        In VS-Code:
+        $ mvnDebug "-DforkCount=0" test
 
-    // @Test
-    // public void runFunctionalTest() {
+        And launch the 'Debug(Attach)' at the Run/Debug pannel
+    */
 
-    //     BstTest app = new BstTest();
-    //     Method method = null;
-    //     String nextStep;
-
-
-    //     GraphWalkerWebSocketClient gw_wsc = new GraphWalkerWebSocketClient();
-    //     gw_wsc.run();
-    //     gw_wsc.loadModel(Paths.get("src/test/resources/com/cyberark/BstModel.json"));
-    //     while (gw_wsc.hasNext()) {
-    //         gw_wsc.getNext();
-    //         gw_wsc.getData();
-    //     }
-    //     gw_wsc.close();
-    // }
 }
