@@ -13,6 +13,7 @@ public class TestRunner {
 
     private BstTest testApp;
     private List<String> excludes;
+    static private GraphWalkerWebSocketClient gw_wsc = new GraphWalkerWebSocketClient();;
 
     public TestRunner() {
         testApp = new BstTest();
@@ -32,7 +33,18 @@ public class TestRunner {
  
             Method method = null;
             try {
-                method = testApp.getClass().getMethod(methodName);
+                /**
+                 * 'v_Added' is a different method since it sends data to the model
+                 * It does it by calling the 'setData' method of GraphWalkerWebSocketClient
+                 * For this, it has to get the GraphWalkerWebSocketClient object as parameter.
+                 * All the other test methods don't get any parameters
+                 */
+                if(methodName.compareTo("v_Added") == 0) {
+                    method = testApp.getClass().getMethod(methodName, GraphWalkerWebSocketClient.class);
+                }
+                else {
+                    method = testApp.getClass().getMethod(methodName);
+                }
             } catch (SecurityException e) {
                 e.printStackTrace();
             } catch (NoSuchMethodException e) {
@@ -40,7 +52,12 @@ public class TestRunner {
             }
 
             try {
-                method.invoke(testApp);
+                if(methodName.compareTo("v_Added") == 0) {
+                    method.invoke(testApp, gw_wsc);
+                }
+                else {
+                    method.invoke(testApp);
+                }
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
@@ -55,8 +72,6 @@ public class TestRunner {
 
     @Test
     public void runFunctionalTest() {
-
-        GraphWalkerWebSocketClient gw_wsc = new GraphWalkerWebSocketClient();
         gw_wsc.run();
         gw_wsc.loadModel(Paths.get("src/test/resources/com/cyberark/BstModel.json"));
         while (gw_wsc.hasNext()) {

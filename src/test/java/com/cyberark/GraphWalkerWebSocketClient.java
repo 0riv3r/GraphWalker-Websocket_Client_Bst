@@ -25,7 +25,7 @@ public class GraphWalkerWebSocketClient {
     private static final Logger logger = LoggerFactory.getLogger(GraphWalkerWebSocketClient.class);
 
     private enum RX_STATE {
-        NONE, HASNEXT, LOADMODEL, START, GETNEXT, GETDATA, VISITEDELEMENT
+        NONE, HASNEXT, LOADMODEL, START, GETNEXT, GETDATA, SETDATA, VISITEDELEMENT
     }
 
     private final String GET_NEXT = "{\"command\": \"getNext\"}";
@@ -132,6 +132,18 @@ public class GraphWalkerWebSocketClient {
                         rxState = RX_STATE.GETDATA;
                         if (root.getBoolean("success")) {
                             runner.executeStateData(root.getJSONObject("data"));
+                            cmd = true;
+                        }
+                    } else if (type.equals("SETDATA")) {
+                        /**
+                         * 'setData' happens inside the 'GetNext' state since it is called from the test 
+                         * as part of method invocation trigered by 'GetNext'
+                         * (the 'setData' is being called from an invoked method).
+                         * so no change of state.
+                         * rxState has to be set since it is being nulled when entering here
+                         */
+                        rxState = RX_STATE.GETNEXT;
+                        if (root.getBoolean("success")) {
                             cmd = true;
                         }
                     } else if (type.equals("VISITEDELEMENT")) {
@@ -264,5 +276,19 @@ public class GraphWalkerWebSocketClient {
         // logger.debug("Get data");
         client.wsc.send(GET_DATA);
         wait(client, RX_STATE.GETDATA);
+    }
+
+    /**
+     * Asks the machine to set data values in the current model context to the given values.
+     * This method is called inside the 'GetNext' state since it is called from the test 
+     * as part of method invocation trigered by 'GetNext'
+     * (the 'setData' is being called from an invoked method).
+     * so no change of state.
+     */
+    public void setData(String jsToSetData) {
+        // System.out.println("setData: " + jsToSetData);
+        // logger.debug("Set data");
+        String _jsToSetData = "{\"command\": \"setData\", \"action\": \"" + jsToSetData + "\"}";
+        client.wsc.send(_jsToSetData);
     }
 }

@@ -108,13 +108,13 @@ public class BstTest {
         // throw new RuntimeException( "e_ToMenu is not implemented yet!" );
     }
 
-    public void v_Added() {
+    public void v_Added(GraphWalkerWebSocketClient gw_wsc) {
         System.out.println("v_Added");
 
         System.out.println("bst.nodes: " + Arrays.toString(bst.nodes().toArray()));
         System.out.println("inTree: " + Arrays.toString(inTree.toArray()));
         System.out.println("nodesStack: " + Arrays.toString(nodesStack.toArray()));
-        assertEquals(inTree.size(), bst.nodes().size());
+       
 
         /**
          *  Set the model's data - number of vals to the current number of nodes in the test 
@@ -124,7 +124,12 @@ public class BstTest {
          *  Otherwise, the model's guards will not function as they should
          *  The model's guard for instance will enable e_Delete when the tree is empty
          * */ 
-        // setModelNumberOfNodes(inTree.size());
+        String jsToSetData = "vals=" + String.valueOf(inTree.size()) + ";";
+        System.out.println("in v_Added, jsToSetData:  " + jsToSetData);
+        assertNotNull(gw_wsc);
+        gw_wsc.setData(jsToSetData);
+
+        assertEquals(inTree.size(), bst.nodes().size());
     }
 
     public void v_Found() {
@@ -180,6 +185,9 @@ public class BstTest {
         $ java -jar ../lib/graphwalker-cli-4.2.0.jar  --debug all online
         or
         $ java -jar graphwalker-cli-4.2.0.jar online --port 9999 --service WEBSOCKET
+
+
+        $ java -jar ../lib/graphwalker-cli-4.3.0-SNAPSHOT.jar --debug all online
 
         In * VS-Code * :
         ----------------
