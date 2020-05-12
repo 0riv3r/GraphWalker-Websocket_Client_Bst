@@ -7,7 +7,7 @@
       {
         "name": "BstModel",
         "id": "cbca8c67-6d0c-40b4-8afb-032b069a4bc1",
-        "generator": "random(time_duration(120))",
+        "generator": "random(time_duration(60))",
         "startElementId": "5d0ea780-7501-11ea-a6ab-e31121e1e9a7",
         "actions": [
           "vals=0;"

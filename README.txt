@@ -2,27 +2,7 @@
 Websocket API:
 https://github.com/GraphWalker/graphwalker-project/wiki/Websocket-API
 
---------------------------------------------------------------------------------------------
-
-
-**************************************************************
-****     run GraphWalker online test as REST service      ****
-**************************************************************
-
-# in another terminal/PuTTy , lunch the GraphWalker Websocket service and load the model:
-
-    Execute
-    # If required, make sure to use the correct java:
-    $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-    $ cd workspace/GraphWalker-websocket_client/
-    $ java -jar ../lib/graphwalker-cli-4.2.0.jar online --port 8887 --service WEBSOCKET
-
-    $ java -jar ../lib/graphwalker-cli-4.2.0.jar --debug all online --port 9999 --service WEBSOCKET
-
-# In VS-Code run:
-$ mvn clean test
-
----------------------------------------------------------------------------------------------
+=====================================================================================================
 
 Setup
 =====
@@ -36,79 +16,96 @@ add to pom.xml:
         <version>1.3.4</version>
     </dependency>
 
-
-
-
-vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-
-    $ java -jar ../lib/graphwalker-cli-4.2.0.jar -d all online -s RESTFUL -m src/main/resources/com/cyberark/BstModel.json "random(edge_coverage(100))"
-    OR:
-    $ java -jar ../lib/graphwalker-cli-4.2.0.jar -d all online -s RESTFUL -m src/main/resources/com/cyberark/BstModel.json "random(edge_coverage(100) && vertex_coverage(100))"
-    OR:
-    $ java -jar ../lib/graphwalker-cli-4.2.0.jar -d all online -s RESTFUL -m src/main/resources/com/cyberark/BstModel.json "random(time_duration(10))"
-
-
-REST APIs:
-https://github.com/GraphWalker/graphwalker-project/wiki/Rest-API-overview
-
-Postman
-=======
-The Postman data is at lib/GraphWalker.postman_collection.json
-you can copy its content and paste in your Postman import.
-
-
-CLI HTTP client
-===============
-https://httpie.org/
-
-CentOS:
-$ yum install httpie
-
-Mac:
-$ brew install httpie
-
-$ http GET  localhost:8887/graphwalker/hasNext
-
-$ http GET  localhost:8887/graphwalker/getNext
-
-$ http GET  localhost:8887/graphwalker/getData
-
-$ http PUT  localhost:8887/graphwalker/restart
-
-
-
-# in VS-Code run:
------------------
-Execute
-# If required, make sure to use the correct java:
-$ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-$ mvn clean compile exec:java -Dexec.mainClass="com.cyberark.BstTest"
-
-or:
-$ mvn clean
-$ mvn compile
-$ mvn exec:java -Dexec.mainClass="com.cyberark.BstTest"
-
-
 =====================================================================
 
-In * Terminal * :
------------------
-$ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-$ pwd
-/Users/oferr/workspace/GraphWalker-websocket_client
+In the following test log, a few line-prints that I sent to the Terminal. you can see how the setData manage to keep the Model in sync:
 
-$ java -jar ../lib/graphwalker-cli-4.2.0.jar online
-or
-$ java -jar ../lib/graphwalker-cli-4.2.0.jar  --debug all online
-or
-$ java -jar graphwalker-cli-4.2.0.jar online --port 9999 --service WEBSOCKET
+e_ToMenu
+>>>>>>  stateData - vals = 6
+v_MenuDispatcher
+>>>>>>  stateData - vals = 6
+e_Delete
+bst.nodes: [1, 3, 4, 8, 13, 14]
+inTree: [1, 3, 4, 8, 13, 14]
+nodesStack: [13, 14, 3, 4, 1, 8]
+>>>>>>  stateData - vals = 5
+v_Deleted
+bst.nodes: [1, 3, 4, 13, 14]
+inTree: [1, 3, 4, 13, 14]
+nodesStack: [13, 14, 3, 4, 1]
+>>>>>>  stateData - vals = 5
+e_ToMenu
+>>>>>>  stateData - vals = 5
+v_MenuDispatcher
+>>>>>>  stateData - vals = 5
+e_GetNodes
+>>>>>>  stateData - vals = 5
+v_NodesList
+>>>>>>  stateData - vals = 5
+e_ToMenu
+>>>>>>  stateData - vals = 5
+v_MenuDispatcher
+>>>>>>  stateData - vals = 5
+e_Add
+>>>>>>  stateData - vals = 6
+v_Added
+bst.nodes: [1, 3, 4, 13, 14]
+inTree: [1, 3, 4, 13, 14]
+nodesStack: [13, 14, 3, 4, 1]
+in v_Added, jsToSetData:  vals=5;
+>>>>>>  stateData - vals = 5
+e_ToMenu
+>>>>>>  stateData - vals = 5
+v_MenuDispatcher
+>>>>>>  stateData - vals = 5
+e_FindFakeVal
+>>>>>>  stateData - vals = 5
+v_NotFound
+>>>>>>  stateData - vals = 5
+e_ToMenu
+>>>>>>  stateData - vals = 5
+v_MenuDispatcher
+>>>>>>  stateData - vals = 5
+e_Delete
+bst.nodes: [1, 3, 4, 13, 14]
+inTree: [1, 3, 4, 13, 14]
+nodesStack: [13, 14, 3, 4, 1]
 
-In * VS-Code * :
-----------------
-$ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-$ mvn clean test
+-----------------------------
+Explanation:
 
+- stateData here represents the Model's nodes counter, which is 6 at the begining here and then change to 5 after e_Delete call.
+
+>>>>>>  stateData - vals = 6
+e_Delete
+bst.nodes: [1, 3, 4, 8, 13, 14]
+inTree: [1, 3, 4, 8, 13, 14]
+nodesStack: [13, 14, 3, 4, 1, 8]
+>>>>>>  stateData - vals = 5
+
+- the test method 'e_Add' is executed and a random value is chosen to add to Bst.
+In this case the randomly chosen value is already in Bst and is not being added (rejected by Bst)
+therefore the number of nodes in Bst is not changed after this 'add' method execution.
+
+- But we see that the Model doesn't know that the 'add' is rejected, and it increase its nodes counter by one to 6:
+
+>>>>>>  stateData - vals = 5
+e_Add
+>>>>>>  stateData - vals = 6
+
+- the test updates the model through the 'seData' API with the correct number of nodes.
+it sends to the model the javascript statement "vals=6;" that sets the value of the model's variable 'vals' to 6.
+Then we see that the model is now updated and in sync with the correct number of nodes
+
+>>>>>>  stateData - vals = 6
+v_Added
+bst.nodes: [1, 3, 4, 13, 14]
+inTree: [1, 3, 4, 13, 14]
+nodesStack: [13, 14, 3, 4, 1]
+in v_Added, jsToSetData:  vals=5;
+>>>>>>  stateData - vals = 5
+
+=====================================================================
 
 Debugging:
 ----------
@@ -129,25 +126,34 @@ $ mvnDebug "-DforkCount=0" test
 And launch the 'Debug(Attach)' at the Run/Debug pannel
 
 
-
-
 =======================================================================================
-Execution output:
-=================
 
-- Get data
-- Got message: {"data":{"vals":"0"},"success":true,"command":"getData"}
-- Have next step?
-- Got message: {"success":true,"hasNext":true,"command":"hasNext"}
- Get next step
-- Got message: {"elementId":"9a6b8be2-3e0c-4e8d-bb38-21107b66a4d3",
-                "visitedCount":1,"stopConditionFulfillment":0.25,"data":{"vals":"1"},
-                "modelId":"cbca8c67-6d0c-40b4-8afb-032b069a4bc1","totalCount":6,
-                "command":"visitedElement"}
-- Got message: {"elementId":"9a6b8be2-3e0c-4e8d-bb38-21107b66a4d3",
-                "modelId":"cbca8c67-6d0c-40b4-8afb-032b069a4bc1","success":true,
-                "name":"e_Add","command":"getNext"}
-- Get data
-- Got message: {"data":{"vals":"1"},"success":true,"command":"getData"}
-- Have next step?
+*******************************************************************
+****     run GraphWalker online test as Websocket service      ****
+*******************************************************************
 
+# in another terminal/PuTTy , lunch the GraphWalker Websocket service and load the model:
+-----------------------------------------------------------------------------------------
+
+    # If required, make sure to use the correct java:
+    $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+
+    $ cd workspace/GraphWalker-websocket_client/
+
+    $ java -jar ../lib/graphwalker-cli-4.2.0.jar online --port 8887 --service WEBSOCKET
+
+    $ java -jar ../lib/graphwalker-cli-4.2.0.jar --debug all online --port 9999 --service WEBSOCKET
+
+    
+    $ java -jar ../lib/graphwalker-cli-4.3.0-SNAPSHOT.jar --debug all online
+
+
+# In VS-Code run:
+-----------------
+
+# If required, make sure to use the correct java:
+$ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+
+$ mvn clean test
+
+=====================================================================================================
