@@ -163,3 +163,12 @@ $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 $ mvn clean graphwalker:generate-test-sources test
 
 =====================================================================================================
+
+Run the player at:
+------------------
+file:///Users/oferr/workspace/GraphWalker_Workshop-Websocket_Client_Bst/ws_player/index.html?wsURI=localhost:8887
+
+
+
+=====================================================================================================
+
