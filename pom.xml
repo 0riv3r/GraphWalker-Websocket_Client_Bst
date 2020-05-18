@@ -9,7 +9,7 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-    <graphwalker.version>4.2.0</graphwalker.version>
+    <graphwalker.version>4.3.0-SNAPSHOT</graphwalker.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -38,10 +38,15 @@
       <version>${graphwalker.version}</version>
     </dependency>
     <dependency>
+        <groupId>org.graphwalker</groupId>
+        <artifactId>graphwalker-websocket</artifactId>
+        <version>4.2.0</version>
+      </dependency>
+    <dependency>
       <groupId>org.graphwalker</groupId>
-      <artifactId>graphwalker-websocket</artifactId>
+      <artifactId>graphwalker-model-checker</artifactId>
       <version>${graphwalker.version}</version>
-   </dependency>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -83,6 +88,12 @@
       <version>5.4.2</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.3</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -93,10 +104,10 @@
         <version>${graphwalker.version}</version>
         <executions>
             <execution>
-                <id>generate-sources</id>
-                <phase>generate-sources</phase>
+                <id>generate-test-sources</id>
+                <phase>generate-test-sources</phase>
                 <goals>
-                    <goal>generate-sources</goal>
+                    <goal>generate-test-sources</goal>
                 </goals>
             </execution>
         </executions>

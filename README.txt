@@ -138,7 +138,7 @@ And launch the 'Debug(Attach)' at the Run/Debug pannel
     # If required, make sure to use the correct java:
     $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 
-    $ cd workspace/GraphWalker_Workshop-Websocket_Client_Bst/
+    $ cd workspace/GraphWalker-websocket_client/
 
     $ java -jar ../lib/graphwalker-cli-4.2.0.jar online --port 8887 --service WEBSOCKET
 
@@ -146,6 +146,9 @@ And launch the 'Debug(Attach)' at the Run/Debug pannel
 
     
     $ java -jar ../lib/graphwalker-cli-4.3.0-SNAPSHOT.jar --debug all online
+
+    $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+    $ java -jar ../lib/graphwalker-studio-4.3.0-SNAPSHOT.jar 
 
 
 # In VS-Code run:
@@ -155,5 +158,8 @@ And launch the 'Debug(Attach)' at the Run/Debug pannel
 $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 
 $ mvn clean test
+
+$ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+$ mvn clean graphwalker:generate-test-sources test
 
 =====================================================================================================
