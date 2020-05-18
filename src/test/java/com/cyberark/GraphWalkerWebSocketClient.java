@@ -36,8 +36,8 @@ public class GraphWalkerWebSocketClient {
     public RX_STATE rxState = RX_STATE.NONE;
     public boolean cmd = false;
     public boolean hasNext = false;
-    private int port = 8887;
-    //private int port = 9999;
+    //private int port = 8887;
+    private int port = 9999;
     private String host = "localhost";
     private GraphWalkerWebSocketClient client;
 

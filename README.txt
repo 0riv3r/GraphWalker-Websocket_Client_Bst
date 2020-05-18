@@ -138,7 +138,7 @@ And launch the 'Debug(Attach)' at the Run/Debug pannel
     # If required, make sure to use the correct java:
     $ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 
-    $ cd workspace/GraphWalker-websocket_client/
+    $ cd workspace/GraphWalker_Workshop-Websocket_Client_Bst/
 
     $ java -jar ../lib/graphwalker-cli-4.2.0.jar online --port 8887 --service WEBSOCKET
 
